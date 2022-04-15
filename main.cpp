@@ -18,7 +18,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow("LE2C_12_コウノ_ケンシロウ0102");
+	win->CreateGameWindow("LE2C_12_コウノ_ケンシロウ");
+
+	//新ブランチテスト
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
