@@ -51,9 +51,12 @@ private: // メンバ変数
 	uint32_t textureHandle_ = 0;
 	Model* model_ = nullptr;
 	//ワールドトランスフォーム
-	WorldTransform worldTransform_;
+	WorldTransform worldTransform_[100];
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
+	//カメラの上方向の角度
+	float viewAngle = 0.0f;
+
 
 	//デバッグ用
 	uint32_t debugNum=0;

@@ -17,7 +17,7 @@ DebugText* DebugText::GetInstance() {
 void DebugText::Initialize() {
 
 	// デバッグテキスト用テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("debugfont.png");
+	textureHandle_ = TextureManager::Load("debugfont3.png");
 	// 全てのスプライトデータについて
 	for (int i = 0; i < _countof(spriteDatas_); i++) {
 		// スプライトを生成する
