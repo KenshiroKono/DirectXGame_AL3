@@ -180,7 +180,7 @@ void GameScene::Update() {
 	debugText_->SetPos(50, 70);
 	debugText_->Printf("eye(%.4f,%.4f,%.4f)", viewProjection_.target.x, viewProjection_.target.y, viewProjection_.target.z);
 	//カメラの上方向回転
-	debugText_->SetPos(50, 70);
+	debugText_->SetPos(50, 90);
 	debugText_->Printf("eye(%.4f,%.4f,%.4f)", viewProjection_.up.x, viewProjection_.up.y, viewProjection_.up.z);
 
 #pragma endregion
