@@ -154,14 +154,13 @@ void GameScene::Update() {
 	#pragma endregion
 	*/
 	//FoV変更処理
-	/*
+	
 	#pragma region Fov
-
-			if (input_->PushKey(DIK_UP)) {//上方向キーで視野角が広がる
+			if (input_->PushKey(DIK_S)) {//上方向キーで視野角が広がる
 				viewProjection_.fovAngleY += 0.01f;
 				viewProjection_.fovAngleY = min(viewProjection_.fovAngleY, XM_PI);
 			}
-			if (input_->PushKey(DIK_DOWN)) {//下方向キーで視野角が狭まる
+			if (input_->PushKey(DIK_W)) {//下方向キーで視野角が狭まる
 				viewProjection_.fovAngleY -= 0.01f;
 				viewProjection_.fovAngleY = max(viewProjection_.fovAngleY,0.01f);
 			}
@@ -169,7 +168,7 @@ void GameScene::Update() {
 			viewProjection_.UpdateMatrix();
 
 	#pragma endregion
-		*/
+		
 	//クリップ距離変更処理
 #pragma region Near
 	if (input_->PushKey(DIK_UP)) {
