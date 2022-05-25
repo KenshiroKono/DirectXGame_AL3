@@ -58,6 +58,19 @@ private: // メンバ変数
 	float viewAngle = 0.0f;
 
 
+public:
+	enum PartId {
+		Root,	//大元
+		Spine,	//脊椎	
+		Chest,	//胴体
+		Head,	//頭部
+		ArmL,	//左腕
+		ArmR,	//右腕
+		Hip,	//腰部
+		LegL,	//左足
+		LegR,	//右足	
+	};
+
 	//デバッグ用
 	uint32_t debugNum=0;
 
