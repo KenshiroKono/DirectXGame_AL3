@@ -21,24 +21,26 @@ class GameScene {
 
 public:
 	enum PartId {
-		Root,	//大元
-		Spine,	//脊椎	
-		Chest,	//胴体
-		Head,	//頭部
-		ArmL,	//左腕
-		ArmR,	//右腕
-		Hip,	//腰部
-		LegL,	//左足
-		LegR,	//右足	
+		kRoot,	//大元
+		kSpine,	//脊椎	
+		kChest,	//胴体
+		kHead,	//頭部
+		kArmL,	//左腕
+		kArmR,	//右腕
+		kHip,	//腰部
+		kLegL,	//左足
+		kLegR,	//右足	
+
+		kNumPartId
 	};
 
-	
 
 
-  public: // メンバ関数
-	/// <summary>
-	/// コンストクラタ
-	/// </summary>
+
+public: // メンバ関数
+  /// <summary>
+  /// コンストクラタ
+  /// </summary>
 	GameScene();
 
 	/// <summary>
@@ -66,7 +68,7 @@ public:
 	/// </summary>
 	void Draw();
 
-  private: // メンバ変数
+private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
@@ -76,7 +78,7 @@ public:
 	uint32_t textureHandle_ = 0;
 	Model* model_ = nullptr;
 	//ワールドトランスフォーム
-	WorldTransform worldTransforms[100];
+	WorldTransform worldTransforms_[100];
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 	//カメラの上方向の角度

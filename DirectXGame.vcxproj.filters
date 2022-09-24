@@ -25,9 +25,6 @@
     <Filter Include="ヘッダー ファイル\audo">
       <UniqueIdentifier>{3a0044cc-1b7d-4ed5-a1a6-9074ed1b1769}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\base">
-      <UniqueIdentifier>{551d5cf3-f4a6-49b9-832f-076a33cef817}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\base">
       <UniqueIdentifier>{74394124-7d35-4440-8404-7b478262b455}</UniqueIdentifier>
     </Filter>
@@ -37,17 +34,23 @@
     <Filter Include="ヘッダー ファイル\scene">
       <UniqueIdentifier>{8f83101b-6ce3-4c73-a4d3-5052382dedab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\input">
-      <UniqueIdentifier>{337d978c-44b1-4af3-811b-c5f6f355f7de}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\input">
       <UniqueIdentifier>{d461f61e-3cc4-4b11-b521-37a61c927ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\math">
+      <UniqueIdentifier>{647f4977-924a-4954-923f-5619e5afc9a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\3d">
+      <UniqueIdentifier>{eea0966d-6645-4fdb-914d-c9a2f8092442}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\math">
       <UniqueIdentifier>{4c21a99e-f783-4367-bdcb-0ebd1d434719}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\math">
-      <UniqueIdentifier>{647f4977-924a-4954-923f-5619e5afc9a3}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\input">
+      <UniqueIdentifier>{337d978c-44b1-4af3-811b-c5f6f355f7de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base">
+      <UniqueIdentifier>{551d5cf3-f4a6-49b9-832f-076a33cef817}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="scene\GameScene.cpp">
       <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="3d\WorldTransform.cpp">
+      <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
