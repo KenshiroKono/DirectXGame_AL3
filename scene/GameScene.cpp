@@ -12,6 +12,7 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 	delete model_;
 	delete debugCamera_;
+	delete player_;
 }
 
 
@@ -120,8 +121,12 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+
+	player_ = new Player();
+	player_->Initialize(model_, textureHandle_);
+
 	//デバッグカメラの生成
-	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
+	//debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 
 
@@ -173,7 +178,8 @@ void GameScene::Initialize() {
 
 
 
-
+	/*
+	
 
 	//X.Y.Z方向のスケーリングを設定
 	worldTransforms_[0].scale_ = { 1.0f, 1.0f, 1.0f };
@@ -270,7 +276,7 @@ void GameScene::Initialize() {
 	worldTransforms_[PartId::kLegR].Initialize();
 	worldTransforms_[PartId::kLegR].translation_ = { -2.5f,-1.5,0 };
 	worldTransforms_[PartId::kLegR].parent_ = &worldTransforms_[PartId::kHip];
-
+	*/
 
 
 
@@ -419,6 +425,7 @@ void GameScene::Update() {//----------------------
 
 
 #pragma region オブジェクト	
+	/*
 	//キャラクターの移動ベクトル
 	Vector3 move = { 0, 0, 0 };
 	//キャラクターの移動速さ
@@ -471,7 +478,12 @@ void GameScene::Update() {//----------------------
 	debugText_->Printf("worldx:%f/y:%f/z:%f", worldTransforms_[0].translation_.x, worldTransforms_[0].translation_.y, worldTransforms_[0].translation_.z);
 	debugText_->SetPos(50, 170);
 	debugText_->Printf("speed%f", move.x);
+	*/
 #pragma endregion
+
+
+	player_->Update();
+
 
 }
 void GameScene::Draw() {
@@ -501,15 +513,16 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる-----------------
 	/// </summary>
 
+	player_->Draw(viewProjection_);
 
-
+	/*
 	for (int i = 0; i < kNumPartId; i++) {
 		if (i==kRoot||i==kSpine) {
 			continue;
 		}
 		model_->Draw(worldTransforms_[i], viewProjection_, textureHandle_);
 	}
-
+	*/
 
 
 	// 3Dオブジェクト描画後処理

@@ -10,6 +10,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "DebugCamera.h"	
+#include "Player.h"
 
 /// <summary>
 /// ゲームシーン
@@ -73,7 +74,7 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
-
+	Player* player_ = nullptr;
 
 	uint32_t textureHandle_ = 0;
 	Model* model_ = nullptr;
