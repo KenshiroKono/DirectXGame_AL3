@@ -3,6 +3,9 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "WorldTransform.h"
+
+#include"PayerBullet.h"
 #pragma once
 
 ///< summary>
@@ -16,7 +19,10 @@ public:
 	void Update();
 	//描画処理
 	void Draw(ViewProjection& viewProjection);
-
+	//撃つ処理
+	void Attack();
+	//回転処理
+	Matrix4 Rotate();
 
 private:
 	//ワールド変換データ
@@ -29,4 +35,7 @@ private:
 	Input* input_ = nullptr;
 	//デバックテキスト
 	DebugText* debugText_ = nullptr;
+
+
+	PlayerBullet* bullet_ = nullptr;
 };

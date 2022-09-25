@@ -26,7 +26,7 @@ float Degree(const float& degree) {
 	float n = degree * PI / 180;
 	return n;
 }
-
+/*
 #pragma region Mat
 Matrix4 matIdentity() {
 	//単位行列
@@ -110,6 +110,7 @@ Matrix4 Mat(WorldTransform w) {
 	return mat;
 };
 #pragma endregion
+*/
 
 
 void GameScene::Initialize() {
