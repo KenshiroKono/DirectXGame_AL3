@@ -11,6 +11,7 @@
 #include "WorldTransform.h"
 #include "DebugCamera.h"	
 #include "Player.h"
+#include"Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -75,8 +76,10 @@ private: // メンバ変数
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
 	Player* player_ = nullptr;
+	Enemy* enemy_ = nullptr;
 
 	uint32_t textureHandle_ = 0;
+	uint32_t enemyTexHandle_ = 0;
 	Model* model_ = nullptr;
 	//ワールドトランスフォーム
 	WorldTransform worldTransforms_[100];

@@ -2,19 +2,15 @@
 
 
 #include "DebugText.h"
-#include "Input.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "WorldTransform.h"
-#include "memory"
-#include "list"
+#include<assert.h>
 #include"PayerBullet.h"
+#include<memory>
+#include<list>
 
-///< summary>
-///自キャラ
-///< summary>
-class Player {
+class Enemy {
 public:
 	//初期化
 	void Initialize(Model* model, uint32_t textureHandle);
@@ -22,10 +18,6 @@ public:
 	void Update();
 	//描画処理
 	void Draw(ViewProjection& viewProjection);
-	//撃つ処理
-	void Attack();
-	//回転処理
-	Matrix4 Rotate();
 
 private:
 	//ワールド変換データ
@@ -34,11 +26,6 @@ private:
 	Model* model_ = nullptr;
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
-	//入力処理
-	Input* input_ = nullptr;
 	//デバックテキスト
 	DebugText* debugText_ = nullptr;
-
-	//弾
-	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 };

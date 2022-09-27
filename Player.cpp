@@ -1,6 +1,8 @@
 #include "Player.h"
 #include <cassert>
+#include "MyMatrix.h"
 
+/*
 #pragma region Mat
 Matrix4 matIdentity() {
 	//単位行列
@@ -84,22 +86,33 @@ Matrix4 Mat(WorldTransform w) {
 	return mat;
 };
 #pragma endregion
+
+*/
+
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE)) {
-		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
 
-		bullet_ = newBullet;
+		//弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+
+		//速度ベクトルを自機の向きに合わせて回転させる
+		velocity = Vec_rot(velocity, worldTransform_.matWorld_);
+
+		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
+		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+
+		bullets_.push_back(std::move(newBullet));
 	}
 }
 Matrix4 Player::Rotate() {
 
 	const float kRot = 0.05f;
 	Vector3 Rot = { 0, 0, 0 };
-	if (input_->PushKey(DIK_U)) {
+	if (input_->PushKey(DIK_I)) {
 		Rot = { 0, kRot, 0 };
 	}
-	else if (input_->PushKey(DIK_I)) {
+	else if (input_->PushKey(DIK_U)) {
 		Rot = { 0, -kRot, 0 };
 	}
 	worldTransform_.rotation_ += Rot;
@@ -121,6 +134,11 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 }
 
 void Player::Update() {
+
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) { return bullet->IsDead(); });
+
+
 	Vector3 move = { 0, 0, 0 };
 
 	const float speed = 0.2f;
@@ -171,7 +189,7 @@ void Player::Update() {
 	matTrans.m[3][3] = 1;
 
 #pragma endregion
-	//worldTransform_.matWorld_ = matIdentity;
+	worldTransform_.matWorld_ = matIdentity;
 	//worldTransform_.matWorld_ *= matTrans;
 	worldTransform_.matWorld_ *= Mat(worldTransform_);
 	//行列の転送
@@ -185,8 +203,8 @@ void Player::Update() {
 
 	//攻撃	
 	Attack();
-	if (bullet_) {
-		bullet_->Update();
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) {
+		bullet->Update();
 	}
 
 
@@ -195,7 +213,7 @@ void Player::Update() {
 void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
-	if (bullet_) {
-		bullet_->Draw(viewProjection);
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) {
+		bullet->Draw(viewProjection);
 	}
 }
