@@ -2,6 +2,25 @@
 #include <cassert>
 #include "MyMatrix.h"
 
+
+void Enemy::Approach_move() {
+	//ˆÚ“®
+	Vector3 move = { 0, 0, -0.2f };
+	worldTransform_.translation_ += move;
+	//ˆê’è‚ÌˆÊ’u‚É’B‚µ‚½‚ç—£’E
+	if (worldTransform_.translation_.z < 0.0f) {
+		phase_ = Phase::Leave;
+	}
+}
+void Enemy::Leave_move() {
+	//ˆÚ“®
+	Vector3 move = { 0, 0, 0.2f };
+	worldTransform_.translation_ += move;
+	if (worldTransform_.translation_.z > 100.0f) {
+		phase_ = Phase::Approach;
+	}
+}
+
 void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model);
 
@@ -14,12 +33,20 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 }
 
 void Enemy::Update() {
-	//ˆÚ“®
-	Vector3 move = { 0, 0, -0.2f };
+
+	switch (phase_) {
+	case Phase::Approach:
+	default:
+		Approach_move();
+		break;
+	case Phase::Leave:
+		Leave_move();
+
+		break;
+	}
+
+
 #pragma region ˆÚ“®ˆ—
-
-	worldTransform_.translation_ += move;
-
 	worldTransform_.matWorld_ = matIdentity();
 	worldTransform_.matWorld_ = Mat(worldTransform_);
 	//s—ñ‚Ì“]‘—

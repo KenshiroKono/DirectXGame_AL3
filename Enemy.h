@@ -10,6 +10,12 @@
 #include<memory>
 #include<list>
 
+//行動フェーズ
+enum class Phase {
+	Approach, //接近する
+	Leave,    //離脱する
+};
+
 class Enemy {
 public:
 	//初期化
@@ -18,6 +24,10 @@ public:
 	void Update();
 	//描画処理
 	void Draw(ViewProjection& viewProjection);
+
+	//各パターンの処理
+	void Approach_move();
+	void Leave_move();
 
 private:
 	//ワールド変換データ
@@ -28,4 +38,8 @@ private:
 	uint32_t textureHandle_ = 0u;
 	//デバックテキスト
 	DebugText* debugText_ = nullptr;
+
+	//フェーズ
+	Phase phase_ = Phase::Approach;
+
 };
