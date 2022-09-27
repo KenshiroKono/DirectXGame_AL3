@@ -11,6 +11,13 @@ void Enemy::Approach_move() {
 	if (worldTransform_.translation_.z < 0.0f) {
 		phase_ = Phase::Leave;
 	}
+
+	if (bullletTime-- < 0) {
+	
+		Fire();
+	
+	}
+
 }
 void Enemy::Leave_move() {
 	//移動
@@ -21,6 +28,32 @@ void Enemy::Leave_move() {
 	}
 }
 
+void Enemy::Fire() {
+
+	//弾の速度
+	const float kBulletSpeed = -1.0f;
+	Vector3 velocity(0, 0, kBulletSpeed);
+
+	//速度ベクトルを自機の向きに合わせて回転させる
+	velocity = Vec_rot(velocity, worldTransform_.matWorld_);
+
+	//弾を生成し、初期化
+	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
+	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+
+	//弾を登録する
+	bullets_.push_back(std::move(newBullet));
+
+	bullletTime = kFireInterval;
+
+}
+
+void Enemy::ApproachInitialize() {
+
+	bullletTime = kFireInterval;
+
+}
+
 void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model);
 
@@ -29,10 +62,14 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 	debugText_ = DebugText::GetInstance();
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 0, 5.0f, 30.0f };
+	worldTransform_.translation_ = { 10, 5.0f, 30.0f };
+
+	ApproachInitialize();
 }
 
 void Enemy::Update() {
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) { return bullet->IsDead(); });
 
 	switch (phase_) {
 	case Phase::Approach:
@@ -45,6 +82,10 @@ void Enemy::Update() {
 		break;
 	}
 
+	
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
+		bullet->Update();
+	}
 
 #pragma region 移動処理
 	worldTransform_.matWorld_ = matIdentity();
@@ -63,4 +104,7 @@ void Enemy::Update() {
 
 void Enemy::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
+		bullet->Draw(viewProjection);
+	}
 }

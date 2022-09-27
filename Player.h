@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "DebugText.h"
 #include "Input.h"
 #include "Model.h"

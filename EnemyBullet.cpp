@@ -1,16 +1,16 @@
-#include"PayerBullet.h"
-#include<assert.h>
+#include"EnemyBullet.h"
 #include "MyMatrix.h"
-void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
+#include <assert.h>
+void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	assert(model);
 	model_ = model;
 	velocity_ = velocity;
-	textureHandle_ = TextureManager::Load("black.png");
+	textureHandle_ = TextureManager::Load("red.png");
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 }
 
-void PlayerBullet::Update() {
+void EnemyBullet::Update() {
 	worldTransform_.matWorld_ = matIdentity();
 	worldTransform_.matWorld_ *= Mat(worldTransform_);
 	worldTransform_.translation_ += velocity_;
@@ -22,6 +22,6 @@ void PlayerBullet::Update() {
 	}
 }
 
-void PlayerBullet::Draw(const ViewProjection& viewProjection) {
+void EnemyBullet::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }

@@ -6,9 +6,9 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include<assert.h>
-#include"PayerBullet.h"
 #include<memory>
 #include<list>
+#include"EnemyBullet.h"
 
 //行動フェーズ
 enum class Phase {
@@ -29,6 +29,14 @@ public:
 	void Approach_move();
 	void Leave_move();
 
+	void ApproachInitialize();
+
+	//攻撃処理
+	void Fire();
+
+	//間隔
+	static const int kFireInterval = 60;
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -42,4 +50,8 @@ private:
 	//フェーズ
 	Phase phase_ = Phase::Approach;
 
+	//弾
+	std::list<std::unique_ptr<EnemyBullet>> bullets_;
+	//発射タイマー
+	int32_t bullletTime = 0;
 };
