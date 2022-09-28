@@ -2,6 +2,7 @@
 #include <cassert>
 #include "MyMatrix.h"
 
+#include "Player.h"
 
 void Enemy::Approach_move() {
 	//移動
@@ -13,9 +14,9 @@ void Enemy::Approach_move() {
 	}
 
 	if (bullletTime-- < 0) {
-	
+
 		Fire();
-	
+
 	}
 
 }
@@ -30,12 +31,27 @@ void Enemy::Leave_move() {
 
 void Enemy::Fire() {
 
+	assert(player_);
+
 	//弾の速度
-	const float kBulletSpeed = -1.0f;
-	Vector3 velocity(0, 0, kBulletSpeed);
+	const float kBulletSpeed = 1.0f;
+	Vector3 velocity;
+
+	Vector3 pPos = player_->GetWorldPosition();
+	Vector3 ePos = GetWorldPosition();
+
+	Vector3 len ;
+	len.x = ePos.x -pPos.x;
+	len.y = ePos.y -pPos.y;
+	len.z = ePos.z -pPos.z;
+
+	velocity = normalize(len);
+
+	len *= kBulletSpeed;
+
 
 	//速度ベクトルを自機の向きに合わせて回転させる
-	velocity = Vec_rot(velocity, worldTransform_.matWorld_);
+	//velocity = Vec_rot(velocity, worldTransform_.matWorld_);
 
 	//弾を生成し、初期化
 	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
@@ -54,6 +70,16 @@ void Enemy::ApproachInitialize() {
 
 }
 
+Vector3 Enemy::GetWorldPosition() {
+	//座標を格納
+	Vector3 worldPos;
+	//ワールド行列の平行移動成分を取得
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
+}
 void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model);
 
@@ -82,7 +108,7 @@ void Enemy::Update() {
 		break;
 	}
 
-	
+
 	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
 		bullet->Update();
 	}

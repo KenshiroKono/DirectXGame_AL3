@@ -13,7 +13,7 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 void EnemyBullet::Update() {
 	worldTransform_.matWorld_ = matIdentity();
 	worldTransform_.matWorld_ *= Mat(worldTransform_);
-	worldTransform_.translation_ += velocity_;
+	worldTransform_.translation_ -= velocity_;
 	//çsóÒÇÃì]ëó
 	worldTransform_.TransferMatrix();
 	//éûä‘åoâﬂÇ≈è¡Ç¶ÇÈ

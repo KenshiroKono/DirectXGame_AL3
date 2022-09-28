@@ -10,6 +10,10 @@
 #include<list>
 #include"EnemyBullet.h"
 
+
+//自機クラスの前方前言
+class Player;
+
 //行動フェーズ
 enum class Phase {
 	Approach, //接近する
@@ -28,14 +32,18 @@ public:
 	//各パターンの処理
 	void Approach_move();
 	void Leave_move();
-
 	void ApproachInitialize();
 
 	//攻撃処理
 	void Fire();
-
 	//間隔
 	static const int kFireInterval = 60;
+
+	//プレイヤーのセッター
+	void SetPlayer(Player* player) { player_ = player; }
+
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
 
 private:
 	//ワールド変換データ
@@ -54,4 +62,7 @@ private:
 	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 	//発射タイマー
 	int32_t bullletTime = 0;
+
+	//自キャラ
+	Player* player_ = nullptr;
 };

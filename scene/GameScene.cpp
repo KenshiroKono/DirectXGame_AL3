@@ -41,9 +41,8 @@ void GameScene::Initialize() {
 
 	enemy_ = new Enemy();
 	enemy_->Initialize(model_, enemyTexHandle_);
-
-	//デバッグカメラの生成
-	//debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
+	//敵キャラに自キャラのアドレスを渡す
+	enemy_->SetPlayer(player_);
 
 
 
@@ -84,11 +83,11 @@ void GameScene::Initialize() {
 
 
 	//ワールドトランスフォーム 初期化
-	Matrix4 IdentityMat4;
+	/*Matrix4 IdentityMat4;
 	IdentityMat4.m[0][0] = 1;
 	IdentityMat4.m[1][1] = 1;
 	IdentityMat4.m[2][2] = 1;
-	IdentityMat4.m[3][3] = 1;
+	IdentityMat4.m[3][3] = 1;*/
 
 
 }

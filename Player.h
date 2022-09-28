@@ -25,6 +25,8 @@ public:
 	void Attack();
 	//回転処理
 	Matrix4 Rotate();
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
 
 private:
 	//ワールド変換データ
