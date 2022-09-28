@@ -101,13 +101,17 @@ Vector3 Vec_rot(Vector3 velocity, Matrix4 amount) {
 	return Rot;
 }
 
-float length(Vector3 vec) {
+float Length(Vector3 vec) {
 	return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
 Vector3 normalize(Vector3 vec) {
-	float len = length(vec);
+	float len = Length(vec);
 	if (len != 0) {
 		return vec /= len;
 	}
+	return vec;
+}
+Vector3 Distance(Vector3 vec_a, Vector3 vec_b) {
+	Vector3 vec = vec_a -= vec_b;
 	return vec;
 }

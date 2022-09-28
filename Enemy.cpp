@@ -34,7 +34,7 @@ void Enemy::Fire() {
 	assert(player_);
 
 	//弾の速度
-	const float kBulletSpeed = 1.0f;
+	const float kBulletSpeed = 0.5;
 	Vector3 velocity;
 
 	Vector3 pPos = player_->GetWorldPosition();
@@ -49,9 +49,6 @@ void Enemy::Fire() {
 
 	len *= kBulletSpeed;
 
-
-	//速度ベクトルを自機の向きに合わせて回転させる
-	//velocity = Vec_rot(velocity, worldTransform_.matWorld_);
 
 	//弾を生成し、初期化
 	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
@@ -80,6 +77,10 @@ Vector3 Enemy::GetWorldPosition() {
 
 	return worldPos;
 }
+
+//衝突したら
+void Enemy::OnCollision() {}
+
 void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model);
 
@@ -88,7 +89,7 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 	debugText_ = DebugText::GetInstance();
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 10, 5.0f, 30.0f };
+	worldTransform_.translation_ = { 10, 5.0f, 80.0f };
 
 	ApproachInitialize();
 }
@@ -118,11 +119,12 @@ void Enemy::Update() {
 	worldTransform_.matWorld_ = Mat(worldTransform_);
 	//行列の転送
 	worldTransform_.TransferMatrix();
-
+	/*
 	debugText_->SetPos(50, 90);
 	debugText_->Printf(
 		"Player:(%f,%f,%f)", worldTransform_.translation_.x, worldTransform_.translation_.y,
 		worldTransform_.translation_.z);
+	*/
 
 #pragma endregion
 

@@ -16,5 +16,6 @@ Matrix4 Mat(WorldTransform w);
 Vector3 Vec_rot(Vector3 velocity, Matrix4 amount);
 
 
-float length(Vector3 vec);//’·‚³‚ğ‹‚ß‚é
+float Length(Vector3 vec);//’·‚³‚ğ‹‚ß‚é
 Vector3 normalize(Vector3 vec);//³‹K‰»‚·‚é
+Vector3 Distance(Vector3 vec_a, Vector3 vec_b);//2“_ŠÔ‚Ì‹——£‚ğ‹‚ß‚é

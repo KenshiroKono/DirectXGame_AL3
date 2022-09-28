@@ -17,6 +17,7 @@ void Player::Attack() {
 		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 
 		bullets_.push_back(std::move(newBullet));
+		bullletTime = kFireInterval;
 	}
 }
 Matrix4 Player::Rotate() {
@@ -45,6 +46,9 @@ Vector3 Player::GetWorldPosition() {
 
 	return worldPos;
 }
+
+//è’ìÀÇµÇΩÇÁ
+void Player::OnCollision() {}
 
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model);
@@ -100,15 +104,18 @@ void Player::Update() {
 	worldTransform_.matWorld_ *= Mat(worldTransform_);
 	//çsóÒÇÃì]ëó
 	worldTransform_.TransferMatrix();
-
+	/*
 	debugText_->SetPos(50, 70);
 	debugText_->Printf(
 		"Player:(%f,%f,%f)", worldTransform_.translation_.x, worldTransform_.translation_.y,
 		worldTransform_.translation_.z);
+	*/
 #pragma endregion
 
 	//çUåÇ	
+	if (bullletTime-- < 0) {
 	Attack();
+	}
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) {
 		bullet->Update();
 	}

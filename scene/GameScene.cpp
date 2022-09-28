@@ -27,8 +27,8 @@ float Degree(const float& degree) {
 
 void GameScene::Initialize() {
 
-	textureHandle_ = TextureManager::Load("mario.jpg");
-	enemyTexHandle_ = TextureManager::Load("mario.jpg");
+	textureHandle_ = TextureManager::Load("mario.png");
+	enemyTexHandle_ = TextureManager::Load("teki.png");
 	model_ = Model::Create();
 
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -82,14 +82,6 @@ void GameScene::Initialize() {
 
 
 
-	//ワールドトランスフォーム 初期化
-	/*Matrix4 IdentityMat4;
-	IdentityMat4.m[0][0] = 1;
-	IdentityMat4.m[1][1] = 1;
-	IdentityMat4.m[2][2] = 1;
-	IdentityMat4.m[3][3] = 1;*/
-
-
 }
 
 void GameScene::Update() {//----------------------
@@ -99,7 +91,7 @@ void GameScene::Update() {//----------------------
 
 //視点の移動ベクトル
 	{
-		/*
+
 		Vector3 move = { 0,0,0 };
 		//視点移動の速さ
 		const float kEyespeed = 0.2f;
@@ -124,7 +116,7 @@ void GameScene::Update() {//----------------------
 		//行列の再計算
 		viewProjection_.UpdateMatrix();
 
-		*/
+
 	}
 
 
@@ -204,8 +196,8 @@ void GameScene::Update() {//----------------------
 		//行列の再計算
 		viewProjection_.UpdateMatrix();
 
-		debugText_->SetPos(50, 110);
-		debugText_->Printf("fovAngleY(Degree):%f", Degree(viewProjection_.fovAngleY));
+		//debugText_->SetPos(50, 110);
+		//debugText_->Printf("fovAngleY(Degree):%f", Degree(viewProjection_.fovAngleY));
 
 	}
 #pragma endregion
@@ -226,17 +218,23 @@ void GameScene::Update() {//----------------------
 		viewProjection_.UpdateMatrix();
 
 		// デバック用表示
-		debugText_->SetPos(50, 130);
-		debugText_->Printf("nearZ: % f", viewProjection_.nearZ);
+		//debugText_->SetPos(50, 130);
+		//debugText_->Printf("nearZ: % f", viewProjection_.nearZ);
 	}
 #pragma endregion
 
 
 
 	player_->Update();
-
 	if (enemy_ != nullptr)enemy_->Update();
+	CheckAllCollision();
 
+	debugText_->SetPos(50, 110);
+	debugText_->Printf("WASD:camera");
+	debugText_->SetPos(50, 130);
+	debugText_->Printf("ARROW:moob");
+	debugText_->SetPos(50, 150);
+	debugText_->Printf("SPACE:fire");
 }
 void GameScene::Draw() {
 
@@ -266,7 +264,7 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player_->Draw(viewProjection_);
-	if (enemy_!=nullptr) enemy_->Draw(viewProjection_);
+	if (enemy_ != nullptr) enemy_->Draw(viewProjection_);
 
 
 	// 3Dオブジェクト描画後処理
@@ -275,6 +273,7 @@ void GameScene::Draw() {
 
 #pragma region PrimitiveDrawer
 
+	/*
 #pragma region DrawLine
 	const float LINE_MAX = 25;
 	Vector3 lineStart;
@@ -313,8 +312,9 @@ void GameScene::Draw() {
 
 	}
 
-#pragma endregion 
+#pragma endregion
 
+	*/
 
 #pragma endregion 
 
@@ -333,4 +333,84 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollision() {
+	//判定対象AとBの座標
+	Vector3 posA, posB;
+
+	//自弾リストを取得
+	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player_->GetBullets();
+	//敵弾リストを取得
+	const std::list<std::unique_ptr<EnemyBullet>>& enemyBullets = enemy_->GetBullets();
+
+#pragma	region	自キャラと敵弾の当たり判定
+	//自キャラの座標
+	posA = player_->GetWorldPosition();
+	//自キャラと敵弾全ての当たり判定
+	for (const std::unique_ptr<EnemyBullet>& eBullet : enemyBullets) {
+		//敵弾の座標
+		posB = eBullet->GetBulletPosition();
+		//A,Bの距離
+		Vector3 vecPos = Distance(posA, posB);
+		float dis = Length(vecPos);
+		//
+		float	radius = player_->GetRadius() + eBullet->GetRadius();
+		//判定
+		if (dis <= radius) {
+			//自キャラのコールバックを呼び出し
+			player_->OnCollision();
+			//敵弾のコールバックを呼び出し
+			eBullet->OnCollision();
+		}
+	}
+#pragma	endregion
+
+#pragma region 自弾と敵キャラの当たり判定
+	//敵弾の座標
+	posA = enemy_->GetWorldPosition();
+	//自キャラと敵弾全ての当たり判定
+	for (const std::unique_ptr<PlayerBullet>& pBullet : playerBullets) {
+		//自弾の座標
+		posB = pBullet->GetBulletPosition();
+		// A,Bの距離
+		Vector3 vecPos = Distance(posA, posB);
+		float dis = Length(vecPos);
+		//
+		float radius = enemy_->GetRadius() + pBullet->GetRadius();
+		//判定
+		if (dis <= radius) {
+			//敵キャラのコールバックを呼び出し
+			enemy_->OnCollision();
+			//自弾のコールバックを呼び出し
+			pBullet->OnCollision();
+		}
+	}
+#pragma endregion
+
+#pragma region 自弾と敵弾の当たり判定
+	//自弾の座標
+	for (const std::unique_ptr<PlayerBullet>& pBullet : playerBullets) {
+		posA = pBullet->GetBulletPosition();
+		//自キャラと敵弾全ての当たり判定
+		for (const std::unique_ptr<EnemyBullet>& eBullet : enemyBullets) {
+			//敵弾の座標
+			posB = eBullet->GetBulletPosition();
+			// A,Bの距離
+			Vector3 vecPos = Distance(posA, posB);
+			float dis = Length(vecPos);
+			//
+			float radius = enemy_->GetRadius() + pBullet->GetRadius();
+			//判定
+			if (dis <= radius) {
+				//自弾のコールバックを呼び出し
+				pBullet->OnCollision();
+				//敵弾のコールバックを呼び出し
+				eBullet->OnCollision();
+			}
+		}
+	}
+#pragma endregion
+
+	/**/
 }
